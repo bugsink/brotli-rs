@@ -1,0 +1,19 @@
+[package]
+name = "brotli-rs-python"
+version = "1.0.6"
+edition = "2021"
+rust-version = "1.85"
+license = "MIT"
+description = "Python bindings for the safe-Rust brotli crate"
+repository = "https://github.com/bugsink/brotli-rs"
+homepage = "https://github.com/bugsink/brotli-rs"
+readme = "README.md"
+publish = false
+
+[lib]
+name = "_brotli_rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+brotli = "=1.0.6"
+pyo3 = { version = "0.30.1", features = ["abi3-py311", "extension-module"] }

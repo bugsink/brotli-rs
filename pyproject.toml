@@ -1,0 +1,44 @@
+[build-system]
+requires = ["maturin>=1.9,<2"]
+build-backend = "maturin"
+
+[project]
+name = "brotli-rs"
+version = "1.0.6"
+description = "Python bindings for the safe-Rust brotli crate"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE", "licenses/**/*"]
+keywords = ["brotli", "compression", "rust"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
+  "Programming Language :: Rust",
+  "Topic :: System :: Archiving :: Compression",
+  "Typing :: Typed",
+]
+
+[project.urls]
+"Source" = "https://github.com/bugsink/brotli-rs"
+"Issues" = "https://github.com/bugsink/brotli-rs/issues"
+
+[project.optional-dependencies]
+test = [
+  "pytest>=8",
+]
+
+[tool.maturin]
+python-source = "python"
+module-name = "brotli_rs._brotli_rs"
+features = ["pyo3/extension-module"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
