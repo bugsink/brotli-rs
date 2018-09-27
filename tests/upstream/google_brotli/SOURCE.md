@@ -1,12 +1,12 @@
 # Source
 
 The interoperability suite imports Google's independently implemented
-`Brotli` 1.0.1 package from PyPI as a test-only oracle. No source or tests are
+`Brotli` 1.0.6 package from PyPI as a test-only oracle. No source or tests are
 copied from that package.
 
-- distribution: <https://pypi.org/project/Brotli/1.0.1/>
-- source archive: `Brotli-1.0.1.zip`
-- source archive SHA-256: `36c5d56f4f20c952ed998b0d2f9839a282081fd1f18e82bc3b3e9348b27fbe6d`
-- published: `2017-11-13T11:16:13.981007Z`
+- distribution: <https://pypi.org/project/Brotli/1.0.6/>
+- source archive: `Brotli-1.0.6.zip`
+- source archive SHA-256: `72d5475de32cc9464af58f095d9c30b9c019dc3cda105b4e4354dfd93d83a760`
+- published: `2018-09-24T11:26:11.080598Z`
 - upstream: <https://github.com/google/brotli>
 - license: MIT, reproduced in `LICENSE`

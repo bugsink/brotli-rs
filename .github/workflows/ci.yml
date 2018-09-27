@@ -38,7 +38,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - uses: dtolnay/rust-toolchain@1.85.0
       - name: Install test tools
-        run: python -m pip install maturin pytest 'Brotli==1.0.1'
+        run: python -m pip install maturin pytest 'Brotli==1.0.6'
       - name: Build wheel
         run: maturin build --release --locked --out dist
       - name: Install wheel
