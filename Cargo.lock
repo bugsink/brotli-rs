@@ -19,9 +19,9 @@ dependencies = [
 
 [[package]]
 name = "brotli"
-version = "3.0.0"
+version = "3.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f5a094344e546659ea4d4a1c8e5c73853d705f28a942d7ffaea04c4cff20b377"
+checksum = "e89abc110c93fec02917d0a5aacc49e532ebcd57324e9a81842303fb342b3396"
 dependencies = [
  "alloc-no-stdlib",
  "alloc-stdlib",
@@ -40,7 +40,7 @@ dependencies = [
 
 [[package]]
 name = "brotli-rs-python"
-version = "3.0.0"
+version = "3.0.1"
 dependencies = [
  "brotli",
  "brotli-decompressor",

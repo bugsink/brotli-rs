@@ -1,10 +1,10 @@
 # Historical provenance
 
-This snapshot binds the published `brotli` 3.0.0 crate. Its packaged source
-matches `dropbox/rust-brotli@905fc5f092d436dab0db6dfadef5455d65b605f8`,
-whose author and committer timestamp is `2018-11-04T14:21:43-08:00`.
+This snapshot binds the published `brotli` 3.0.1 crate. Its packaged source
+matches `dropbox/rust-brotli@c2b73b98c44b3ea91177eae522e72db4e38561ee`,
+whose author and committer timestamp is `2018-11-05T17:25:20-08:00`.
 
-The crate requires `brotli-decompressor > 2.0.2, < 2.1.0`; this reconstruction pins
+The crate requires `brotli-decompressor ~2.0`; this reconstruction pins
 `brotli-decompressor` 2.0.3, the newest matching non-yanked release available
 when the crate was published. Interoperability tests use Google's PyPI
 `Brotli` 1.0.7, the newest release available on that date.
