@@ -1,8 +1,8 @@
 # Historical provenance
 
-This snapshot binds the published `brotli` 3.0.3 crate. Its packaged source
-matches `dropbox/rust-brotli@a281080aee8f8dc68ec780a53357902f3bf92b7d`,
-whose author and committer timestamp is `2018-11-22T00:29:09-08:00`.
+This snapshot binds the published `brotli` 3.1.0 crate. Its packaged source
+matches `dropbox/rust-brotli@9b756f118958c65616f4b06659177c41c14dccf2`,
+whose author and committer timestamp is `2018-11-22T01:48:01-08:00`.
 
 The crate requires `brotli-decompressor ~2.1`; this reconstruction pins
 `brotli-decompressor` 2.1.0, the newest matching non-yanked release available
