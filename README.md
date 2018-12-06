@@ -1,6 +1,6 @@
-# brotli-rs 3.1.4
+# brotli-rs 3.1.5
 
-Python bindings for Dropbox's safe-Rust `brotli` 3.1.4 crate.
+Python bindings for Dropbox's safe-Rust `brotli` 3.1.5 crate.
 
 This historical snapshot exposes compression and decompression through the
 eventual `brotli_rs` API shape:
