@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "brotli-rs"
-version = "3.1.8"
+version = "3.2.0"
 description = "Python bindings for the safe-Rust brotli crate"
 readme = "README.md"
 requires-python = ">=3.11"
