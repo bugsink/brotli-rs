@@ -1,6 +1,6 @@
-# brotli-rs 3.3.2
+# brotli-rs 3.3.3
 
-Python bindings for Dropbox's safe-Rust `brotli` 3.3.2 crate.
+Python bindings for Dropbox's safe-Rust `brotli` 3.3.3 crate.
 
 This historical snapshot exposes compression and decompression through the
 eventual `brotli_rs` API shape:
@@ -12,9 +12,9 @@ encoded = brotli_rs.compress(b"some data", quality=5)
 decoded = brotli_rs.decompress(encoded)
 ```
 
-`Compressor` is present, but retains a buffered implementation because the
-historical writer does not yet provide the output-extraction lifecycle needed
-by the eventual Python streaming API.
+`Compressor` uses the eventual method names but remains deliberately buffered
+in this historical reconstruction: `process()` and `flush()` return empty bytes,
+and `finish()` emits the stream.
 The Rust crate does not yet provide the later incremental decoder interface,
 so `Decompressor` is intentionally absent.
 
