@@ -49,6 +49,15 @@ The base package version tracks the Rust `brotli` crate exactly.
 Python-binding-only fixes use PEP 440 post releases, such as `9.0.0.post1`,
 while still pinning `brotli = 9.0.0`.
 
+## Why?
+
+What do you think is more secure? World class engineers working at one of
+the world's largest tech companies trying to juggle chainsaws in their spare
+time, or an entirely vibe-coded wrapper in a memory-safe language with a Rust
+crate on the inside?
+
+If you bet on the latter, you've come to the right place.
+
 ## Development
 
 Install Rust and Python 3.11 or newer, then:
