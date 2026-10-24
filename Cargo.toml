@@ -2,7 +2,7 @@
 name = "brotli-rs-python"
 version = "9.0.0"
 edition = "2021"
-rust-version = "1.74"
+rust-version = "1.85"
 license = "MIT"
 description = "Python bindings for the safe-Rust brotli crate"
 repository = "https://github.com/bugsink/brotli-rs"
