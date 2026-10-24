@@ -43,6 +43,7 @@ name = "brotli-rs-python"
 version = "9.0.0"
 dependencies = [
  "brotli",
+ "brotli-decompressor",
  "pyo3",
 ]
 

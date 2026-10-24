@@ -5,6 +5,7 @@ use std::io::Write;
 use brotli::enc::backward_references::{BrotliEncoderMode, BrotliEncoderParams};
 use brotli::enc::writer::StandardAlloc;
 use brotli::{BrotliDecompressStream, BrotliResult, BrotliState, CompressorWriter};
+use brotli_decompressor::BrotliDecoderHasMoreOutput;
 use pyo3::create_exception;
 use pyo3::exceptions::PyException;
 use pyo3::prelude::*;
@@ -154,7 +155,7 @@ impl PythonDecompressor {
     }
 
     fn can_accept_more_data(&self) -> bool {
-        !self.failed && !self.finished && self.pending.is_empty() && !self.needs_output
+        !self.failed && self.pending.is_empty() && !self.needs_output
     }
 
     fn is_finished(&self) -> bool {
@@ -247,7 +248,7 @@ impl PythonDecompressor {
                     break;
                 }
                 BrotliResult::NeedsMoreOutput => {
-                    self.needs_output = true;
+                    self.needs_output = BrotliDecoderHasMoreOutput(&self.state);
                     if output_buffer_limit.is_some_and(|limit| output.len() >= limit) {
                         break;
                     }

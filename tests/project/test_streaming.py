@@ -17,6 +17,28 @@ def test_zero_output_limit_retains_input_until_drained():
     assert b"".join(output) == b"A" * 1000
 
 
+def test_exact_output_limit_does_not_claim_zero_length_output_is_pending():
+    original = b"A" * 8192
+    encoded = brotli_rs.compress(original)
+    decompressor = brotli_rs.Decompressor()
+
+    assert decompressor.process(encoded, output_buffer_limit=8192) == original
+    assert decompressor.can_accept_more_data() or decompressor.is_finished()
+
+    if not decompressor.is_finished():
+        assert decompressor.process(b"", output_buffer_limit=8192) == b""
+        assert decompressor.is_finished()
+
+
+def test_finished_decompressor_accepts_empty_input():
+    decompressor = brotli_rs.Decompressor()
+    assert decompressor.process(brotli_rs.compress(b"done")) == b"done"
+    assert decompressor.is_finished()
+    assert decompressor.can_accept_more_data()
+    assert decompressor.process(b"") == b""
+    assert decompressor.can_accept_more_data()
+
+
 def test_new_input_is_rejected_while_output_is_pending():
     encoded = brotli_rs.compress(b"A" * 1000)
     decompressor = brotli_rs.Decompressor()
