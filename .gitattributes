@@ -1,2 +1,4 @@
 licenses/** linguist-vendored=true
 tests/upstream/** linguist-vendored=true
+# Codec fixtures are binary inputs even when their contents look like text.
+tests/upstream/**/testdata/** -text
