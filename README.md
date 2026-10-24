@@ -51,7 +51,7 @@ while still pinning `brotli = 9.0.0`.
 
 ## Development
 
-Install Rust and Python 3.9 or newer, then:
+Install Rust and Python 3.11 or newer, then:
 
 ```console
 python -m venv .venv

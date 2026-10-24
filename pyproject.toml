@@ -7,7 +7,7 @@ name = "brotli-rs"
 version = "9.0.0"
 description = "Python bindings for the safe-Rust brotli crate"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 license = "MIT"
 license-files = ["LICENSE", "licenses/**/*"]
 keywords = ["brotli", "compression", "rust"]
@@ -15,12 +15,11 @@ classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
   "Programming Language :: Rust",
   "Topic :: System :: Archiving :: Compression",
   "Typing :: Typed",
