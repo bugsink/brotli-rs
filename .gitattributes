@@ -1,0 +1,2 @@
+licenses/** linguist-vendored=true
+tests/upstream/** linguist-vendored=true
