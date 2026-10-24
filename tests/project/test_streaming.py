@@ -63,10 +63,9 @@ def test_compressor_lifecycle():
     assert brotli_rs.decompress(prefix + suffix) == b"payload"
     with pytest.raises(brotli_rs.error, match="already been finished"):
         compressor.process(b"more")
-    with pytest.raises(brotli_rs.error, match="already been finished"):
-        compressor.flush()
-    with pytest.raises(brotli_rs.error, match="already been finished"):
-        compressor.finish()
+    assert compressor.process(b"") == b""
+    assert compressor.flush() == b""
+    assert compressor.finish() == b""
 
 
 @settings(max_examples=40, deadline=None)

@@ -69,10 +69,13 @@ impl PythonCompressor {
         let data = data.to_vec();
         let output = py
             .detach(|| {
-                let writer = self
-                    .writer
-                    .as_mut()
-                    .ok_or_else(|| "Compressor has already been finished".to_owned())?;
+                let Some(writer) = self.writer.as_mut() else {
+                    return if data.is_empty() {
+                        Ok(Vec::new())
+                    } else {
+                        Err("Compressor has already been finished".to_owned())
+                    };
+                };
                 writer
                     .write_all(&data)
                     .map_err(|err| format!("Brotli compression failed: {err}"))?;
@@ -85,10 +88,9 @@ impl PythonCompressor {
     fn flush<'py>(&mut self, py: Python<'py>) -> PyResult<Bound<'py, PyBytes>> {
         let output = py
             .detach(|| {
-                let writer = self
-                    .writer
-                    .as_mut()
-                    .ok_or_else(|| "Compressor has already been finished".to_owned())?;
+                let Some(writer) = self.writer.as_mut() else {
+                    return Ok(Vec::new());
+                };
                 writer
                     .flush()
                     .map_err(|err| format!("Brotli compression failed: {err}"))?;
@@ -99,14 +101,12 @@ impl PythonCompressor {
     }
 
     fn finish<'py>(&mut self, py: Python<'py>) -> PyResult<Bound<'py, PyBytes>> {
-        let output = py
-            .detach(|| {
-                self.writer
-                    .take()
-                    .map(CompressorWriter::into_inner)
-                    .ok_or_else(|| "Compressor has already been finished".to_owned())
-            })
-            .map_err(codec_error)?;
+        let output = py.detach(|| {
+            self.writer
+                .take()
+                .map(CompressorWriter::into_inner)
+                .unwrap_or_default()
+        });
         Ok(PyBytes::new(py, &output))
     }
 }
