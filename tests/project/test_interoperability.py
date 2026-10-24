@@ -11,6 +11,7 @@ import brotli_rs
 @pytest.mark.parametrize(
     "data",
     [b"", b"hello", bytes(range(256)) * 1000, b"A" * 1_000_000],
+    ids=["empty", "hello", "all-byte-values", "repeated-a"],
 )
 def test_google_and_rust_streams_are_mutually_decodable(data, mode, quality):
     rust_encoded = brotli_rs.compress(data, mode=mode, quality=quality)
