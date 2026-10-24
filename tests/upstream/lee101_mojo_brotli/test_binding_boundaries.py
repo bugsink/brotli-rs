@@ -2,10 +2,8 @@ import random
 
 import pytest
 
+import brotli as google_brotli
 import brotli_rs
-
-
-google_brotli = pytest.importorskip("brotli", reason="install the 'oracle' extra")
 
 
 def _payload(size=250_000):

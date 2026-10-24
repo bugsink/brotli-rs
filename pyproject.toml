@@ -31,11 +31,9 @@ classifiers = [
 
 [project.optional-dependencies]
 test = [
+  "Brotli==1.2.1",
   "hypothesis>=6",
   "pytest>=8",
-]
-oracle = [
-  "Brotli==1.2.1",
 ]
 
 [tool.maturin]

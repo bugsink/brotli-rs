@@ -56,8 +56,8 @@ Install Rust and Python 3.11 or newer, then:
 ```console
 python -m venv .venv
 . .venv/bin/activate
-python -m pip install maturin pytest hypothesis
-maturin develop
+python -m pip install maturin
+maturin develop --extras=test
 pytest
 ```
 

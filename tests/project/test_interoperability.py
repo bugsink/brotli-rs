@@ -1,11 +1,9 @@
-"""Cross-implementation tests using Google's C package only as an oracle."""
+"""Cross-implementation tests against Google's independent C package."""
 
 import pytest
 
+import brotli
 import brotli_rs
-
-
-brotli = pytest.importorskip("brotli", reason="install the 'oracle' extra")
 
 
 @pytest.mark.parametrize("mode", range(3))

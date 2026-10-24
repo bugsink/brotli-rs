@@ -28,12 +28,15 @@ def test_decoding_one_output_byte_at_a_time():
 
 
 def test_large_expansion_stays_within_each_requested_limit():
-    original = b"A" * (5 * 2**20)
-    limits = [1024 * 1024, 1024]
-    chunks = _decode_in_bounded_calls(brotli_rs.compress(original, quality=1), limits)
+    original = b"A" * (50 * 2**20)
+    limits = [1024 * 1024, 1024, 1024 * 1024]
+    chunks = _decode_in_bounded_calls(
+        brotli_rs.compress(original, quality=1), limits
+    )
 
     assert len(chunks[0]) == limits[0]
-    assert all(len(chunk) <= limits[1] for chunk in chunks[1:])
+    assert len(chunks[1]) == limits[1]
+    assert all(len(chunk) <= limits[2] for chunk in chunks[2:])
     assert b"".join(chunks) == original
 
 
