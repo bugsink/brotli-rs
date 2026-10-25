@@ -255,7 +255,10 @@ impl PythonDecompressor {
                 }
                 BrotliResult::ResultFailure => {
                     self.failed = true;
-                    return Err("Brotli decompression failed".to_owned());
+                    return Err(format!(
+                        "Brotli decompression failed: {:?}",
+                        self.state.error_code
+                    ));
                 }
             }
         }

@@ -1,6 +1,6 @@
 [package]
 name = "brotli-rs-python"
-version = "9.0.0"
+version = "9.1.0"
 edition = "2021"
 rust-version = "1.85"
 license = "MIT"
@@ -15,7 +15,7 @@ name = "_brotli_rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-brotli = "=9.0.0"
-brotli-decompressor = "=6.0.1"
+brotli = "=9.1.0"
+brotli-decompressor = "=6.2.0"
 pyo3 = { version = "0.30.1", features = ["abi3-py311", "extension-module"] }
 
