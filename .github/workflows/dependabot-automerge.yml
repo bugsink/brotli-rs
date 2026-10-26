@@ -66,9 +66,15 @@ jobs:
             // A merge made with GITHUB_TOKEN does not emit a push workflow.
             // Dispatch CI so the exact new main commit is tested and can feed
             // the automatic dependency-release workflow.
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: "ci.yml",
-              ref: "main",
-            });
+            await github.request(
+              "POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches",
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: "ci.yml",
+                ref: "main",
+                headers: {
+                  "X-GitHub-Api-Version": "2026-03-10",
+                },
+              }
+            );
