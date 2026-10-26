@@ -52,6 +52,13 @@ becomes the Python and Rust package version. A decompressor-only update keeps
 the Rust package version and creates the next Python `.postN` release. An
 oracle-only update does not create a release.
 
+A separate workflow squash-merges Dependabot pull requests after their entire
+CI workflow succeeds. It verifies the pull-request author, repository, target
+branch, and exact tested commit before merging. Because a merge made with its
+`GITHUB_TOKEN` does not emit a push workflow, it explicitly dispatches CI on
+the resulting `main`; that run is what can start an automatic dependency
+release. Failed Dependabot updates remain open for investigation.
+
 The workflow commits the version change, tags it, creates the GitHub release,
 and explicitly dispatches the build and PyPI publication workflow for that
 tag. An explicit dispatch is required because GitHub does not start another
