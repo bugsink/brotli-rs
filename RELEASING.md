@@ -88,6 +88,10 @@ binary distribution channel. Because the workflow listens to every
 `published` release, mark a GitHub release as a pre-release only when its
 package version is itself a PEP 440 pre-release.
 
+Reconstructed releases below version 9 build the same artifacts but are never
+submitted to PyPI. Version 9.0.0 was the first public package release, so this
+guard keeps the historical GitHub record separate from the package index.
+
 Do not move a published tag or replace files for a version already uploaded to
 PyPI. Release a binding-only correction as the next `.postN` version.
 
