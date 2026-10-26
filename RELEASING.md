@@ -46,7 +46,7 @@ for PyPI's current first-release instructions.
 
 Dependabot keeps the two Rust dependencies together and the Google Brotli
 Python package used as the test oracle separately. After CI passes for a
-merged Cargo update on `main`, the automatic release workflow starts. A new
+merged Cargo update on `main`, the Automatic Release Check workflow starts. A new
 `brotli` crate version
 becomes the Python and Rust package version. A decompressor-only update keeps
 the Rust package version and creates the next Python `.postN` release. An

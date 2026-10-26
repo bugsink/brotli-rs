@@ -1,4 +1,4 @@
-name: Automatic dependency release
+name: Automatic Release Check
 
 on:
   workflow_run:
@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  release:
+  check:
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (github.event.workflow_run.conclusion == 'success' &&
