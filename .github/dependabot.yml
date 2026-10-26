@@ -35,6 +35,9 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    ignore:
+      # This action reference is also the toolchain version in the MSRV job.
+      - dependency-name: dtolnay/rust-toolchain
     groups:
       all-actions:
         patterns:
