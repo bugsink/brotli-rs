@@ -10,6 +10,12 @@ updates:
         patterns:
           - brotli
           - brotli-decompressor
+      other-rust:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - brotli
+          - brotli-decompressor
 
   - package-ecosystem: pip
     directory: /
@@ -19,8 +25,17 @@ updates:
       google-brotli-oracle:
         patterns:
           - Brotli
+      other-python:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - Brotli
 
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    groups:
+      all-actions:
+        patterns:
+          - "*"
