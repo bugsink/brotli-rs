@@ -42,6 +42,21 @@ for PyPI's current first-release instructions.
 6. When the build jobs have passed, approve the `pypi` deployment if the
    GitHub environment requires a reviewer.
 
+## Automatic dependency releases
+
+Dependabot keeps the two Rust dependencies together and the Google Brotli
+Python package used as the test oracle separately. After CI passes for a
+merged Cargo update on `main`, the automatic release workflow starts. A new
+`brotli` crate version
+becomes the Python and Rust package version. A decompressor-only update keeps
+the Rust package version and creates the next Python `.postN` release. An
+oracle-only update does not create a release.
+
+The workflow commits the version change, tags it, and creates the GitHub
+release that drives the existing build and PyPI publication workflow. The
+workflow is deliberately limited to Cargo dependency changes, so updating the
+PyPI test oracle cannot publish a `brotli-rs` release.
+
 The tag is the immutable identity of the source being built. The GitHub
 release is the publication switch and the place for release notes. Merely
 pushing the tag does not run the release workflow, and saving a draft release
