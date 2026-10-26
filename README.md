@@ -3,6 +3,17 @@
 Python bindings for Dropbox's safe-Rust
 [`brotli`](https://github.com/dropbox/rust-brotli) crate.
 
+## Why?
+
+What do you think is more secure? World class engineers working at one of
+the world's largest tech companies trying to juggle chainsaws in their spare
+time, or an entirely vibe-coded wrapper in a memory-safe language with a Rust
+crate on the inside?
+
+If you bet on the latter, you've come to the right place.
+
+## How to use
+
 The public API follows the `Brotli` Python package where that can be done
 without inheriting its C extension. The distribution and import names are
 both `brotli-rs` / `brotli_rs`, deliberately avoiding a collision with the
@@ -48,15 +59,6 @@ and private implementation names are outside the compatibility contract.
 The base package version tracks the Rust `brotli` crate exactly.
 Python-binding-only fixes use PEP 440 post releases, such as `9.0.0.post1`,
 while still pinning `brotli = 9.0.0`.
-
-## Why?
-
-What do you think is more secure? World class engineers working at one of
-the world's largest tech companies trying to juggle chainsaws in their spare
-time, or an entirely vibe-coded wrapper in a memory-safe language with a Rust
-crate on the inside?
-
-If you bet on the latter, you've come to the right place.
 
 ## Development
 
