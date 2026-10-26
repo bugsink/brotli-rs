@@ -57,6 +57,7 @@ jobs:
           python-version: "3.11"
       - uses: PyO3/maturin-action@v1
         with:
+          rust-toolchain: 1.85.0
           target: ${{ matrix.target }}
           args: --release --locked --out dist
           manylinux: auto
@@ -81,6 +82,7 @@ jobs:
           python-version: "3.11"
       - uses: PyO3/maturin-action@v1
         with:
+          rust-toolchain: 1.85.0
           target: ${{ matrix.target }}
           args: --release --locked --out dist
           manylinux: musllinux_1_2
@@ -112,6 +114,7 @@ jobs:
           architecture: ${{ matrix.python_architecture }}
       - uses: PyO3/maturin-action@v1
         with:
+          rust-toolchain: 1.85.0
           target: ${{ matrix.target }}
           args: --release --locked --out dist
       - uses: actions/upload-artifact@v7
@@ -139,6 +142,7 @@ jobs:
           python-version: "3.11"
       - uses: PyO3/maturin-action@v1
         with:
+          rust-toolchain: 1.85.0
           target: ${{ matrix.target }}
           args: --release --locked --out dist
       - uses: actions/upload-artifact@v7
@@ -156,6 +160,7 @@ jobs:
       - uses: PyO3/maturin-action@v1
         with:
           command: sdist
+          rust-toolchain: 1.85.0
           args: --out dist
       - uses: actions/upload-artifact@v7
         with:

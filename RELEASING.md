@@ -91,6 +91,9 @@ package version is itself a PEP 440 pre-release.
 Reconstructed releases below version 9 build the same artifacts but are never
 submitted to PyPI. Version 9.0.0 was the first public package release, so this
 guard keeps the historical GitHub record separate from the package index.
+Release builds use Rust 1.85, which is both the binding's declared minimum and
+new enough for the current packaging layer while still accepting syntax in the
+oldest reconstructed Rust crates.
 
 Do not move a published tag or replace files for a version already uploaded to
 PyPI. Release a binding-only correction as the next `.postN` version.
