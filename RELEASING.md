@@ -63,6 +63,9 @@ The workflow commits the version change, tags it, creates the GitHub release,
 and explicitly dispatches the build and PyPI publication workflow for that
 tag. An explicit dispatch is required because GitHub does not start another
 workflow from a release created with the automatic workflow's `GITHUB_TOKEN`.
+For a manually dispatched backfill whose version files are already aligned,
+the workflow uses the tested commit directly instead of creating an empty
+version commit.
 The workflow is deliberately limited to Cargo dependency changes, so updating
 the PyPI test oracle cannot publish a `brotli-rs` release.
 

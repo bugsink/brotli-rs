@@ -117,23 +117,32 @@ def main() -> int:
         cwd=ROOT,
         check=True,
     )
-    subprocess.run(
-        ["git", "config", "user.name", "github-actions[bot]"],
-        cwd=ROOT,
-        check=True,
+    staged = subprocess.run(
+        ["git", "diff", "--cached", "--quiet"], cwd=ROOT, check=False
     )
-    subprocess.run(
-        [
-            "git",
-            "config",
-            "user.email",
-            "41898282+github-actions[bot]@users.noreply.github.com",
-        ],
-        cwd=ROOT,
-        check=True,
-    )
-    subprocess.run(["git", "commit", "-m", reason], cwd=ROOT, check=True)
-    subprocess.run(["git", "push", "origin", "HEAD:main"], cwd=ROOT, check=True)
+    if staged.returncode == 1:
+        subprocess.run(
+            ["git", "config", "user.name", "github-actions[bot]"],
+            cwd=ROOT,
+            check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "config",
+                "user.email",
+                "41898282+github-actions[bot]@users.noreply.github.com",
+            ],
+            cwd=ROOT,
+            check=True,
+        )
+        subprocess.run(["git", "commit", "-m", reason], cwd=ROOT, check=True)
+        subprocess.run(["git", "push", "origin", "HEAD:main"], cwd=ROOT, check=True)
+    elif staged.returncode == 0:
+        print("Release version is already prepared; using the tested commit.")
+    else:
+        raise SystemExit("could not determine whether release files changed")
+
     tag = f"v{project_version}"
     subprocess.run(["git", "tag", tag], cwd=ROOT, check=True)
     subprocess.run(["git", "push", "origin", tag], cwd=ROOT, check=True)
