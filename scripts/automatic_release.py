@@ -147,8 +147,24 @@ def main() -> int:
         raise SystemExit("could not determine whether release files changed")
 
     tag = f"v{project_version}"
-    subprocess.run(["git", "tag", tag], cwd=ROOT, check=True)
-    subprocess.run(["git", "push", "origin", tag], cwd=ROOT, check=True)
+    head = git("rev-parse", "HEAD")
+    existing_tag = subprocess.run(
+        ["git", "rev-parse", "--verify", f"refs/tags/{tag}^{{commit}}"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if existing_tag.returncode == 0:
+        if existing_tag.stdout.strip() != head:
+            raise SystemExit(f"{tag} already points at a different commit")
+        print(f"{tag} already points at the tested commit; reusing it.")
+    elif existing_tag.returncode == 128:
+        subprocess.run(["git", "tag", tag], cwd=ROOT, check=True)
+        subprocess.run(["git", "push", "origin", tag], cwd=ROOT, check=True)
+    else:
+        raise SystemExit(f"could not determine whether {tag} already exists")
+
     subprocess.run(
         ["gh", "release", "create", tag, "--generate-notes", "--title", tag],
         cwd=ROOT,

@@ -68,6 +68,9 @@ provide the exact tested target commit and its comparison commit. The workflow
 uses that target directly instead of creating an empty version commit. It
 dispatches the current build workflow from `main`, which then checks out the
 historical tag; the automation therefore need not exist in the tagged source.
+If GitHub's workflow token refuses to create a historical tag because that
+commit contains older workflow files, an administrator may push the exact tag
+first; the check verifies and reuses a tag that already points to its target.
 The workflow is deliberately limited to Cargo dependency changes, so updating
 the PyPI test oracle cannot publish a `brotli-rs` release.
 
