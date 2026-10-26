@@ -1,13 +1,11 @@
 # brotli-rs
 
-Python bindings for Dropbox's safe-Rust
+The "official" Python bindings for Dropbox's safe-Rust
 [`brotli`](https://github.com/dropbox/rust-brotli) crate.
-
-## Why?
 
 What do you think is more secure? World class engineers working at one of
 the world's largest tech companies trying to juggle chainsaws in their spare
-time, or an entirely vibe-coded wrapper in a memory-safe language with a Rust
+time, or a mostly vibe-coded wrapper in a memory-safe language with a Rust
 crate on the inside?
 
 If you bet on the latter, you've come to the right place.
