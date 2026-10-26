@@ -6,8 +6,12 @@ on:
     types: [completed]
   workflow_dispatch:
     inputs:
+      target_commit:
+        description: Exact commit to tag and release
+        required: true
+        type: string
       previous_commit:
-        description: Commit to compare with HEAD
+        description: Commit to compare with the target commit
         required: true
         type: string
 
@@ -36,10 +40,17 @@ jobs:
         env:
           HEAD_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
           PREVIOUS_COMMIT: ${{ inputs.previous_commit }}
+          TARGET_COMMIT: ${{ inputs.target_commit }}
           GH_TOKEN: ${{ github.token }}
         run: |
+          release_script="$RUNNER_TEMP/automatic_release.py"
+          cp scripts/automatic_release.py "$release_script"
+          if [ -n "$TARGET_COMMIT" ]; then
+            git checkout --detach "$TARGET_COMMIT"
+          fi
           previous_commit="$PREVIOUS_COMMIT"
           if [ -z "$previous_commit" ]; then
             previous_commit="$(git rev-parse "$HEAD_SHA^")"
           fi
-          python scripts/automatic_release.py "$previous_commit"
+          AUTOMATIC_RELEASE_ROOT="$GITHUB_WORKSPACE" \
+            python "$release_script" "$previous_commit"

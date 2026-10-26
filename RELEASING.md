@@ -64,8 +64,10 @@ and explicitly dispatches the build and PyPI publication workflow for that
 tag. An explicit dispatch is required because GitHub does not start another
 workflow from a release created with the automatic workflow's `GITHUB_TOKEN`.
 For a manually dispatched backfill whose version files are already aligned,
-the workflow uses the tested commit directly instead of creating an empty
-version commit.
+provide the exact tested target commit and its comparison commit. The workflow
+uses that target directly instead of creating an empty version commit. It
+dispatches the current build workflow from `main`, which then checks out the
+historical tag; the automation therefore need not exist in the tagged source.
 The workflow is deliberately limited to Cargo dependency changes, so updating
 the PyPI test oracle cannot publish a `brotli-rs` release.
 

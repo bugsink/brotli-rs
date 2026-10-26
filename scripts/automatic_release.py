@@ -3,13 +3,16 @@
 
 from __future__ import annotations
 
+import os
 import re
 import subprocess
 import sys
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(
+    os.environ.get("AUTOMATIC_RELEASE_ROOT", Path(__file__).resolve().parent.parent)
+).resolve()
 
 
 def git(*args: str) -> str:
@@ -152,7 +155,16 @@ def main() -> int:
         check=True,
     )
     subprocess.run(
-        ["gh", "workflow", "run", "release.yml", "--ref", tag, "-f", f"tag={tag}"],
+        [
+            "gh",
+            "workflow",
+            "run",
+            "release.yml",
+            "--ref",
+            "main",
+            "-f",
+            f"tag={tag}",
+        ],
         cwd=ROOT,
         check=True,
     )
