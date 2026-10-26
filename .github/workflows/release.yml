@@ -3,6 +3,12 @@ name: Release
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag to build and publish
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -12,9 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.release.tag_name || inputs.tag }}
       - name: Match tag to package version
         env:
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
         run: |
           python - <<'PY'
           import os
@@ -37,6 +45,8 @@ jobs:
         target: [x86_64, aarch64]
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.release.tag_name || inputs.tag }}
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
@@ -59,6 +69,8 @@ jobs:
         target: [x86_64, aarch64]
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.release.tag_name || inputs.tag }}
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
@@ -87,6 +99,8 @@ jobs:
             python_architecture: arm64
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.release.tag_name || inputs.tag }}
       - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
@@ -113,6 +127,8 @@ jobs:
             target: aarch64
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.release.tag_name || inputs.tag }}
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
@@ -130,6 +146,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.release.tag_name || inputs.tag }}
       - uses: PyO3/maturin-action@v1
         with:
           command: sdist

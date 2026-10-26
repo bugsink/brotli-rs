@@ -142,6 +142,11 @@ def main() -> int:
         cwd=ROOT,
         check=True,
     )
+    subprocess.run(
+        ["gh", "workflow", "run", "release.yml", "--ref", tag, "-f", f"tag={tag}"],
+        cwd=ROOT,
+        check=True,
+    )
     print(f"Created {tag} ({reason}).")
     return 0
 

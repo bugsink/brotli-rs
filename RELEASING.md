@@ -52,10 +52,12 @@ becomes the Python and Rust package version. A decompressor-only update keeps
 the Rust package version and creates the next Python `.postN` release. An
 oracle-only update does not create a release.
 
-The workflow commits the version change, tags it, and creates the GitHub
-release that drives the existing build and PyPI publication workflow. The
-workflow is deliberately limited to Cargo dependency changes, so updating the
-PyPI test oracle cannot publish a `brotli-rs` release.
+The workflow commits the version change, tags it, creates the GitHub release,
+and explicitly dispatches the build and PyPI publication workflow for that
+tag. An explicit dispatch is required because GitHub does not start another
+workflow from a release created with the automatic workflow's `GITHUB_TOKEN`.
+The workflow is deliberately limited to Cargo dependency changes, so updating
+the PyPI test oracle cannot publish a `brotli-rs` release.
 
 The tag is the immutable identity of the source being built. The GitHub
 release is the publication switch and the place for release notes. Merely
