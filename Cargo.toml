@@ -1,6 +1,6 @@
 [package]
 name = "brotli-rs-python"
-version = "9.1.0"
+version = "9.1.1"
 edition = "2021"
 rust-version = "1.85"
 license = "MIT"
