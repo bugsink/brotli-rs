@@ -71,4 +71,4 @@ This package was built with heavy use of LLMs. Trust in its correctness is
 derived from the circa 500 tests, which are a combination of upstream tests
 and new tests for the Python API. Also: the actual interface surface is small
 enough to be manually reviewed, and the underlying Rust crate is well-tested and
-actively maintained.
+actively maintained. Also also: it's not the upstream [C lib is free from LLM mistakes](https://github.com/google/brotli/commit/643b22949dacf6fa1d471ca95279e3885c767838).
