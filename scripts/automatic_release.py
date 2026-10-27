@@ -38,14 +38,16 @@ def dependency_version(path: str, dependency: str, commit: str | None = None) ->
         text = (ROOT / path).read_text()
     else:
         text = git("show", f"{commit}:{path}")
-    match = re.search(
-        rf"^\s*{re.escape(dependency)}\s*=\s*\"=([^\"]+)\"$",
-        text,
-        re.MULTILINE,
+    patterns = (
+        rf'^\s*{re.escape(dependency)}\s*=\s*"=([^"]+)"\s*$',
+        rf'^\s*{re.escape(dependency)}\s*=\s*\{{[^}}\n]*'
+        rf'\bversion\s*=\s*"=([^"]+)"[^}}\n]*\}}\s*$',
     )
-    if match is None:
-        raise SystemExit(f"could not find pinned {dependency!r} in {path}")
-    return match.group(1)
+    for pattern in patterns:
+        match = re.search(pattern, text, re.MULTILINE)
+        if match is not None:
+            return match.group(1)
+    raise SystemExit(f"could not find pinned {dependency!r} in {path}")
 
 
 def replace_project_version(version: str) -> None:

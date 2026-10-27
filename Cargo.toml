@@ -15,7 +15,10 @@ name = "_brotli_rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-brotli = "=9.1.1"
+# Keep encoder output independent of the target's float implementation:
+# https://github.com/dropbox/rust-brotli/issues/271
+# https://github.com/dropbox/rust-brotli/pull/259
+brotli = { version = "=9.1.1", features = ["portable-float"] }
 brotli-decompressor = "=6.2.0"
 pyo3 = { version = "0.30.1", features = ["abi3-py311", "extension-module"] }
 
