@@ -4,8 +4,7 @@ updates:
   - package-ecosystem: cargo
     directory: /
     schedule:
-      interval: cron
-      cronjob: "0 * * * *"
+      interval: daily
     cooldown:
       default-days: 3
       exclude:
