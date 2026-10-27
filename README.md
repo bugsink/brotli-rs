@@ -68,4 +68,7 @@ pytest
 tests.
 
 This package was built with heavy use of LLMs. Trust in its correctness is
-derived from the circa 500 tests.
+derived from the circa 500 tests, which are a combination of upstream tests
+and new tests for the Python API. Also: the actual interface surface is small
+enough to be manually reviewed, and the underlying Rust crate is well-tested and
+actively maintained.
