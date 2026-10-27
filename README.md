@@ -64,8 +64,8 @@ maturin develop --extras=test
 pytest
 ```
 
-See `tests/upstream/README.md` for the provenance of imported and adapted
-upstream tests.
+[See](tests/upstream/README.md) the provenance of imported and adapted upstream
+tests.
 
 This package was built with heavy use of LLMs. Trust in its correctness is
 derived from the circa 500 tests.
