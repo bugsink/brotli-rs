@@ -1,11 +1,17 @@
 import io
 import json
+import runpy
 import tarfile
+from pathlib import Path
 
 import pytest
 
-from scripts.upstream_release_notes import format_release_notes
-from scripts.upstream_release_notes import source_commit_from_archive
+
+SCRIPT = runpy.run_path(
+    Path(__file__).parents[2] / "scripts" / "upstream_release_notes.py"
+)
+format_release_notes = SCRIPT["format_release_notes"]
+source_commit_from_archive = SCRIPT["source_commit_from_archive"]
 
 
 def crate_archive(crate, version, vcs_info):
