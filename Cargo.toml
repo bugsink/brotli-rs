@@ -15,7 +15,7 @@ name = "_brotli_rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-brotli = "=9.1.0"
+brotli = "=9.1.1"
 brotli-decompressor = "=6.2.0"
 pyo3 = { version = "0.30.1", features = ["abi3-py311", "extension-module"] }
 
