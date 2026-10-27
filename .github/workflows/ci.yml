@@ -65,3 +65,12 @@ jobs:
       - uses: dtolnay/rust-toolchain@1.85
       - run: cargo check --locked
 
+  automatic-release:
+    name: Automatic Release Check
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    needs: [test, rust, minimum-rust]
+    permissions:
+      actions: write
+      contents: write
+    uses: ./.github/workflows/automatic-release.yml
+

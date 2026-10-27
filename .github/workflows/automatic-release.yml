@@ -4,6 +4,14 @@ on:
   workflow_run:
     workflows: [CI]
     types: [completed]
+  workflow_call:
+    inputs:
+      target_commit:
+        required: false
+        type: string
+      previous_commit:
+        required: false
+        type: string
   workflow_dispatch:
     inputs:
       target_commit:
@@ -27,7 +35,9 @@ jobs:
   check:
     if: >-
       github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'workflow_call' ||
       (github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
       github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     steps:

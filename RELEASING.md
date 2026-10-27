@@ -66,8 +66,12 @@ A separate workflow squash-merges Dependabot pull requests after their entire
 CI workflow succeeds. It verifies the pull-request author, repository, target
 branch, and exact tested commit before merging. Because a merge made with its
 `GITHUB_TOKEN` does not emit a push workflow, it explicitly dispatches CI on
-the resulting `main`; that run is what can start an automatic dependency
-release. Failed Dependabot updates remain open for investigation.
+the resulting `main`. After every test job in that dispatched run succeeds, CI
+calls the release check directly as a reusable workflow. This direct call is
+part of the tested run and does not depend on GitHub emitting another event
+from work started with `GITHUB_TOKEN`. Failed Dependabot updates remain open
+for investigation. Normal `main` pushes continue to start the release check
+through `workflow_run` after CI succeeds.
 
 The workflow commits the version change, tags it, creates the GitHub release,
 and explicitly dispatches the build and PyPI publication workflow for that
