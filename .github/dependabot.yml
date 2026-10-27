@@ -4,7 +4,13 @@ updates:
   - package-ecosystem: cargo
     directory: /
     schedule:
-      interval: weekly
+      interval: cron
+      cronjob: "0 * * * *"
+    cooldown:
+      default-days: 3
+      exclude:
+        - brotli
+        - brotli-decompressor
     groups:
       rust-brotli:
         patterns:
