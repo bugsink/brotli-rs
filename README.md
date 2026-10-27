@@ -2,7 +2,7 @@
 
 Python bindings for Dropbox's safe-Rust [`brotli`](https://github.com/dropbox/rust-brotli) crate.
 
-[The C implementation](https://www.bugsink.com/blog/bye-bye-brotli/) is a security liability and
+The C implementation [is a security liability](https://www.bugsink.com/blog/bye-bye-brotli/) and
 is not regularly released; this package remedies that by providing a memory-safe alternative.
 It is a drop-in replacement for the [`Brotli`](https://pypi.org/project/Brotli/) package.
 
