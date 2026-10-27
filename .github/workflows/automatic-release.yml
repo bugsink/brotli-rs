@@ -43,8 +43,11 @@ jobs:
           TARGET_COMMIT: ${{ inputs.target_commit }}
           GH_TOKEN: ${{ github.token }}
         run: |
-          release_script="$RUNNER_TEMP/automatic_release.py"
-          cp scripts/automatic_release.py "$release_script"
+          release_scripts="$RUNNER_TEMP/release-scripts"
+          mkdir "$release_scripts"
+          cp scripts/automatic_release.py scripts/upstream_release_notes.py \
+            "$release_scripts"
+          release_script="$release_scripts/automatic_release.py"
           if [ -n "$TARGET_COMMIT" ]; then
             git checkout --detach "$TARGET_COMMIT"
           fi

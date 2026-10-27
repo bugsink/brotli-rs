@@ -35,11 +35,21 @@ for PyPI's current first-release instructions.
 3. Build locally with `maturin build --release --locked --sdist` and run
    `twine check dist/*`.
 4. Commit the release changes, push `main`, and wait for CI to pass.
-5. On GitHub, draft a release. In **Choose a tag**, create
+5. Generate the upstream section of the release notes from the published
+   crate's recorded source commit:
+
+   ```sh
+   python scripts/upstream_release_notes.py brotli <version>
+   ```
+
+   This is deliberately sourced from `.cargo_vcs_info.json` in the crate
+   archive. Upstream GitHub releases have empty notes and its tags do not cover
+   every published crate version.
+6. On GitHub, draft a release. In **Choose a tag**, create
    `v<python-version>` (for example `v9.0.0` or `v9.0.0.post1`) and target the
-   exact commit just tested on `main`. Add the release notes and publish the
-   release.
-6. When the build jobs have passed, approve the `pypi` deployment if the
+   exact commit just tested on `main`. Add the generated upstream release notes
+   and publish the release.
+7. When the build jobs have passed, approve the `pypi` deployment if the
    GitHub environment requires a reviewer.
 
 ## Automatic dependency releases
@@ -61,8 +71,12 @@ release. Failed Dependabot updates remain open for investigation.
 
 The workflow commits the version change, tags it, creates the GitHub release,
 and explicitly dispatches the build and PyPI publication workflow for that
-tag. An explicit dispatch is required because GitHub does not start another
-workflow from a release created with the automatic workflow's `GITHUB_TOKEN`.
+tag. Release notes quote the source commit message recorded in the published
+crate's `.cargo_vcs_info.json` and link to that exact upstream commit. A normal
+release uses `brotli`; a decompressor-only post release uses
+`brotli-decompressor`. An explicit dispatch is required because GitHub does not
+start another workflow from a release created with the automatic workflow's
+`GITHUB_TOKEN`.
 For a manually dispatched backfill whose version files are already aligned,
 provide the exact tested target commit and its comparison commit. The workflow
 uses that target directly instead of creating an empty version commit. It

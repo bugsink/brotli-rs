@@ -7,7 +7,10 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
+
+from upstream_release_notes import release_notes
 
 
 ROOT = Path(
@@ -165,11 +168,27 @@ def main() -> int:
     else:
         raise SystemExit(f"could not determine whether {tag} already exists")
 
-    subprocess.run(
-        ["gh", "release", "create", tag, "--generate-notes", "--title", tag],
-        cwd=ROOT,
-        check=True,
-    )
+    if main_changed:
+        notes = release_notes("brotli", new_brotli, reason)
+    else:
+        notes = release_notes("brotli-decompressor", new_decompressor, reason)
+    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8") as notes_file:
+        notes_file.write(notes)
+        notes_file.flush()
+        subprocess.run(
+            [
+                "gh",
+                "release",
+                "create",
+                tag,
+                "--notes-file",
+                notes_file.name,
+                "--title",
+                tag,
+            ],
+            cwd=ROOT,
+            check=True,
+        )
     subprocess.run(
         [
             "gh",
