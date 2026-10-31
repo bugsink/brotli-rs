@@ -10,6 +10,7 @@ use brotli_decompressor::BrotliDecoderHasMoreOutput;
 use pyo3::create_exception;
 use pyo3::exceptions::PyException;
 use pyo3::prelude::*;
+use pyo3::pybacked::PyBackedBytes;
 use pyo3::types::{PyBytes, PyModule};
 
 create_exception!(_brotli_rs, error, PyException);
@@ -66,8 +67,11 @@ impl PythonCompressor {
         })
     }
 
-    fn process<'py>(&mut self, py: Python<'py>, data: &[u8]) -> PyResult<Bound<'py, PyBytes>> {
-        let data = data.to_vec();
+    fn process<'py>(
+        &mut self,
+        py: Python<'py>,
+        data: PyBackedBytes,
+    ) -> PyResult<Bound<'py, PyBytes>> {
         let output = py
             .detach(|| {
                 let Some(writer) = self.writer.as_mut() else {
@@ -78,7 +82,7 @@ impl PythonCompressor {
                     };
                 };
                 writer
-                    .write_all(&data)
+                    .write_all(data.as_ref())
                     .map_err(|err| format!("Brotli compression failed: {err}"))?;
                 Ok::<_, String>(std::mem::take(writer.get_mut()))
             })
@@ -145,12 +149,11 @@ impl PythonDecompressor {
     fn process<'py>(
         &mut self,
         py: Python<'py>,
-        data: &[u8],
+        data: PyBackedBytes,
         output_buffer_limit: Option<usize>,
     ) -> PyResult<Bound<'py, PyBytes>> {
-        let data = data.to_vec();
         let output = py
-            .detach(|| self.process_inner(&data, output_buffer_limit))
+            .detach(|| self.process_inner(data.as_ref(), output_buffer_limit))
             .map_err(codec_error)?;
         Ok(PyBytes::new(py, &output))
     }

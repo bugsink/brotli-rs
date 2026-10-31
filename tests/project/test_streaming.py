@@ -17,6 +17,19 @@ def test_zero_output_limit_retains_input_until_drained():
     assert b"".join(output) == b"A" * 1000
 
 
+def test_mutating_input_does_not_change_pending_output():
+    original = b"buffer input" * 1000
+    encoded = bytearray(brotli_rs.compress(original))
+    decompressor = brotli_rs.Decompressor()
+    assert decompressor.process(encoded, output_buffer_limit=0) == b""
+    encoded[:] = b"\0" * len(encoded)
+
+    output = []
+    while not decompressor.is_finished():
+        output.append(decompressor.process(b"", output_buffer_limit=100))
+    assert b"".join(output) == original
+
+
 def test_exact_output_limit_does_not_claim_zero_length_output_is_pending():
     original = b"A" * 8192
     encoded = brotli_rs.compress(original)

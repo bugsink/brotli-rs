@@ -1,9 +1,14 @@
+from array import array
 from pathlib import Path
 import re
 
 import pytest
 
 import brotli_rs
+
+
+class BytesSubclass(bytes):
+    pass
 
 
 def test_python_and_rust_versions_match():
@@ -16,21 +21,47 @@ def test_python_and_rust_versions_match():
 
 
 @pytest.mark.parametrize(
-    "data",
-    [b"bytes", bytearray(b"bytearray"), memoryview(b"memoryview")],
+    "buffer_type",
+    [
+        bytes, BytesSubclass, bytearray, memoryview,
+        lambda data: array("B", data),
+        lambda data: memoryview(data).cast("B", shape=[len(data), 1]),
+    ],
+    ids=[
+        "bytes", "bytes-subclass", "bytearray", "memoryview", "array",
+        "multidimensional",
+    ],
 )
-def test_contiguous_buffer_inputs(data):
-    assert brotli_rs.decompress(brotli_rs.compress(data)) == bytes(data)
+def test_contiguous_buffer_inputs(buffer_type):
+    original = b"buffer input" * 100
+    encoded = brotli_rs.compress(buffer_type(original))
+    assert brotli_rs.decompress(buffer_type(encoded)) == original
+
+    compressor = brotli_rs.Compressor()
+    encoded = compressor.process(buffer_type(original)) + compressor.finish()
+    decompressor = brotli_rs.Decompressor()
+    assert decompressor.process(buffer_type(encoded)) == original
+    assert decompressor.is_finished()
 
 
-def test_noncontiguous_input_is_rejected():
+@pytest.mark.parametrize("operation", [
+    brotli_rs.compress, brotli_rs.decompress,
+    lambda data: brotli_rs.Compressor().process(data),
+    lambda data: brotli_rs.Decompressor().process(data),
+], ids=["compress", "decompress", "stream-compress", "stream-decompress"])
+def test_noncontiguous_input_is_rejected(operation):
     with pytest.raises(BufferError):
-        brotli_rs.compress(memoryview(b"abcdef")[::2])
+        operation(memoryview(b"abcdef")[::2])
 
 
-def test_text_input_is_rejected():
+@pytest.mark.parametrize("operation", [
+    brotli_rs.compress, brotli_rs.decompress,
+    lambda data: brotli_rs.Compressor().process(data),
+    lambda data: brotli_rs.Decompressor().process(data),
+], ids=["compress", "decompress", "stream-compress", "stream-decompress"])
+def test_text_input_is_rejected(operation):
     with pytest.raises(TypeError):
-        brotli_rs.compress("not bytes")
+        operation("not bytes")
 
 
 def test_one_shot_rejects_incomplete_stream():
