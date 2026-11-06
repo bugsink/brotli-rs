@@ -1,5 +1,8 @@
 # brotli-rs
 
+<img src="https://raw.githubusercontent.com/bugsink/brotli-rs/main/brotli-rs-logo.png"
+     alt="brotli-rs logo" width="128" align="right">
+
 Python bindings for Dropbox's safe-Rust [`brotli`](https://github.com/dropbox/rust-brotli) crate.
 
 The C implementation [is a security liability](https://www.bugsink.com/blog/bye-bye-brotli/) and
