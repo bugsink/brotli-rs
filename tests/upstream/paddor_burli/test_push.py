@@ -84,8 +84,8 @@ def test_output_limit_across_splits(quality, limit, schedule):
 
 
 def test_output_is_available_within_a_meta_block():
-    # Keep Burli's original >1/4 assertion. See SOURCE.md for the observed
-    # buffering difference; it is deliberately not weakened or marked xfail.
+    # Keep Burli's original >1/4 assertion. This caught the wrapper returning
+    # before collecting output already held by the decoder; see SOURCE.md.
     payload = (DATA / "within_meta_block.raw").read_bytes()
     encoded = (DATA / "within_meta_block.br").read_bytes()
     decoder = brotli_rs.Decompressor()

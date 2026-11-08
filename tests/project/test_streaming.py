@@ -1,8 +1,43 @@
+from pathlib import Path
+
 import pytest
 from hypothesis import given, settings
 from hypothesis.strategies import binary, integers
 
 import brotli_rs
+
+
+@pytest.mark.parametrize("limit", [1, 65536, 148901])
+def test_partial_input_drains_output_before_requesting_more_input(limit):
+    testdata = Path(__file__).parents[1] / "upstream/paddor_burli/testdata"
+    encoded = (testdata / "within_meta_block.br").read_bytes()
+    original = (testdata / "within_meta_block.raw").read_bytes()
+    decoder = brotli_rs.Decompressor()
+    output = bytearray(decoder.process(
+        encoded[:len(encoded) // 2], output_buffer_limit=limit
+    ))
+    assert len(output) == limit
+
+    while not decoder.can_accept_more_data():
+        chunk = decoder.process(b"", output_buffer_limit=limit)
+        assert 0 < len(chunk) <= limit
+        output.extend(chunk)
+
+    # All 148,901 bytes decodable from this half must have been returned.
+    assert output == original[:148901]
+    assert decoder.process(b"") == b""
+    assert not decoder.is_finished()
+    output.extend(decoder.process(encoded[len(encoded) // 2:]))
+    assert output == original
+    assert decoder.is_finished()
+
+
+def test_total_output_limit_applies_to_output_held_after_partial_input():
+    testdata = Path(__file__).parents[1] / "upstream/paddor_burli/testdata"
+    encoded = (testdata / "within_meta_block.br").read_bytes()
+    decoder = brotli_rs.Decompressor(max_output=100_000)
+    with pytest.raises(brotli_rs.error, match="max_output"):
+        decoder.process(encoded[:len(encoded) // 2])
 
 
 def test_zero_output_limit_retains_input_until_drained():

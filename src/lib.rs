@@ -248,8 +248,14 @@ impl PythonDecompressor {
                     break;
                 }
                 BrotliResult::NeedsMoreInput => {
-                    self.needs_output = false;
-                    break;
+                    // The decoder can need input while still holding output
+                    // that did not fit in our temporary buffer.
+                    self.needs_output = BrotliDecoderHasMoreOutput(&self.state);
+                    if !self.needs_output
+                        || output_buffer_limit.is_some_and(|limit| output.len() >= limit)
+                    {
+                        break;
+                    }
                 }
                 BrotliResult::NeedsMoreOutput => {
                     self.needs_output = BrotliDecoderHasMoreOutput(&self.state);

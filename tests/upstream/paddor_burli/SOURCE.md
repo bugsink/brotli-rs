@@ -95,19 +95,29 @@ unfinished state, or complete successful output across splits, rather than
 requiring identical partial output on errors. The helper also checks every
 returned chunk against the per-call bound and the cumulative output limit.
 
-### Negative result retained
+### Early return found by the imported test
 
-`test_output_is_available_within_a_meta_block` fails on the current checkout
-with brotli-decompressor 6.3.0. Burli's unchanged assertion requires more than
+`test_output_is_available_within_a_meta_block` initially failed with
+brotli-decompressor 6.3.0. Burli's unchanged assertion requires more than
 75,000 decoded bytes after the first half of its 40,947-byte encoded fixture;
-brotli-rs returns 65,536. An additional empty-input call returns another
-65,536 bytes, and supplying the remainder completes with the correct payload.
-Google Brotli 1.2.1 returns 32,752 bytes on its first call for the same fixture.
+brotli-rs returned 65,536. Additional empty-input calls returned another
+65,536 and then 17,829 bytes. Supplying the remainder also completed with the
+correct payload. Google Brotli 1.2.1 returned 32,752 bytes on its first call
+for the same fixture.
 
-This demonstrates different output buffering, not incorrect final bytes or an
-established Brotli API contract violation. The exact upstream fixture and
-threshold are retained as an ordinary failing test, without weakening the
-assertion, skipping it, or changing the codec to make this import pass.
+Investigation showed that all three decoders had already decoded the same
+148,901 bytes. Both the Rust and Google native decoders can return
+`NeedsMoreInput` while also reporting `HasMoreOutput`. Our wrapper provided a
+64 KiB temporary output buffer and stopped on `NeedsMoreInput` without
+checking for the remaining output. It also reported `can_accept_more_data()`
+as true, so a consumer following that signal would stop collecting output
+until more compressed input arrived.
+
+The wrapper now checks for held output on this return path. It collects that
+output immediately, or retains the pending-output signal when the caller's
+per-call limit is reached. The original fixture and assertion pass unchanged.
+Project regression tests also cover bounded output and enforcement of the
+total output limit before more input arrives.
 
 ## Python binding tests
 
