@@ -107,14 +107,13 @@ def main() -> int:
         print("No release-triggering Cargo dependency changed.")
         return 0
 
-    current_version = cargo_value("Cargo.toml", "version")
     if main_changed:
         release_version = new_brotli
         project_version = release_version
         reason = f"Update to brotli {new_brotli} and decompressor {new_decompressor}"
         replace_cargo_package_version(release_version)
     else:
-        project_version = next_post(current_version)
+        project_version = next_post(cargo_value("pyproject.toml", "version"))
         reason = f"Update to brotli-decompressor {new_decompressor}"
 
     replace_project_version(project_version)
