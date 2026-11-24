@@ -19,6 +19,6 @@ crate-type = ["cdylib"]
 # https://github.com/dropbox/rust-brotli/issues/271
 # https://github.com/dropbox/rust-brotli/pull/259
 brotli = { version = "=9.1.3", features = ["portable-float"] }
-brotli-decompressor = "=6.3.2"
+brotli-decompressor = "=6.4.0"
 pyo3 = { version = "0.30.1", features = ["abi3-py311", "extension-module"] }
 
